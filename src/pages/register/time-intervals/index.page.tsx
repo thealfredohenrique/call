@@ -22,6 +22,7 @@ import {
   IntervalItem,
   IntervalsContainer,
 } from './styles'
+import { useRouter } from 'next/router'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -82,6 +83,7 @@ export default function TimeIntervals() {
       ],
     },
   })
+  const router = useRouter()
   const { fields } = useFieldArray({
     control,
     name: 'intervals',
@@ -93,12 +95,14 @@ export default function TimeIntervals() {
     await api.post('/users/time-intervals', {
       intervals: data.intervals,
     })
+
+    await router.push('/register/update-profile')
   }
 
   return (
     <Container>
       <Header>
-        <Heading as="strong">Quase lá</Heading>
+        <Heading as="strong">Defina sua disponibilidade</Heading>
         <Text>
           Defina o intervalo de horários que você está disponível em cada dia da
           semana.
