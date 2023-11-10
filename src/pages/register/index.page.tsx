@@ -73,7 +73,7 @@ export default function Register() {
         <label>
           <Text size="sm">Nome de usuário</Text>
           <TextInput
-            prefix="ignite.com/"
+            prefix="call.com/"
             placeholder="your-username"
             crossOrigin="anonymous"
             {...register('username')}
