@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
+import { api } from '@/src/lib/axios'
 import { Calendar } from '@/src/components/Calendar'
 import {
   Container,
@@ -11,12 +13,29 @@ import {
 
 export function CalendarStep() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const hasSelectedDate = !!selectedDate
+  const [availability, setAvailability] = useState(null)
+  const router = useRouter()
 
+  const hasSelectedDate = !!selectedDate
   const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
   const describedDate = selectedDate
     ? dayjs(selectedDate).format('DD[ de ]MMMM')
     : null
+  const username = String(router.query.username)
+
+  useEffect(() => {
+    if (!selectedDate) return
+
+    api
+      .get(`/users/${username}/availability`, {
+        params: {
+          date: dayjs(selectedDate).format('YYYY-MM-DD'),
+        },
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+  }, [selectedDate])
 
   return (
     <Container isTimePickerOpen={hasSelectedDate}>
